@@ -22,15 +22,6 @@ https://bitnami.com/redirect/to/153273/bitnami-wampstack-5.6.31-0-windows-x64-in
 
 so it's highly recommended that you use Bitnami as your local Laravel development environment.
 
-However, if you are not using Bitnami, you will need to make sure your server meets the following requirements:
-
-- PHP >= 5.6.4
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Mbstring PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
-
 <a name="installing-laravel"></a>
 ### Installing Laravel
 
@@ -38,11 +29,11 @@ Laravel utilizes [Composer](https://getcomposer.org) to manage its dependencies.
 
 You may install Laravel by issuing the Composer `create-project` command in your terminal:
 
-    composer create-project --prefer-dist laravel/laravel blog
+    composer create-project --prefer-dist laravel/laravel tasksmanager
 
 #### Local Development Server
 
 If you have PHP installed locally and you would like to use PHP's built-in development server to serve your application, you may use the `serve` Artisan command. This command will start a development server at `http://localhost:8000`:
 
-    cd blog
+    cd tasksmanager
     php artisan serve
