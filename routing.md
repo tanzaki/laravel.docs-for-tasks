@@ -4,16 +4,11 @@
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
     - [Optional Parameters](#parameters-optional-parameters)
-    - [Regular Expression Constraints](#parameters-regular-expression-constraints)
 - [Named Routes](#named-routes)
 - [Route Groups](#route-groups)
-    - [Middleware](#route-group-middleware)
-    - [Namespaces](#route-group-namespaces)
-    - [Sub-Domain Routing](#route-group-sub-domain-routing)
     - [Route Prefixes](#route-group-prefixes)
 - [Route Model Binding](#route-model-binding)
     - [Implicit Binding](#implicit-binding)
-    - [Explicit Binding](#explicit-binding)
 - [Form Method Spoofing](#form-method-spoofing)
 - [Accessing The Current Route](#accessing-the-current-route)
 
@@ -99,46 +94,7 @@ Occasionally you may need to specify a route parameter, but make the presence of
         return $name;
     });
 
-<a name="parameters-regular-expression-constraints"></a>
-### Regular Expression Constraints
-
-You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
-
-    Route::get('user/{name}', function ($name) {
-        //
-    })->where('name', '[A-Za-z]+');
-
-    Route::get('user/{id}', function ($id) {
-        //
-    })->where('id', '[0-9]+');
-
-    Route::get('user/{id}/{name}', function ($id, $name) {
-        //
-    })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
-
-<a name="parameters-global-constraints"></a>
-#### Global Constraints
-
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your `RouteServiceProvider`:
-
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Route::pattern('id', '[0-9]+');
-
-        parent::boot();
-    }
-
-Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
-
-    Route::get('user/{id}', function ($id) {
-        // Only executed if {id} is numeric...
-    });
-
+ 
 <a name="named-routes"></a>
 ## Named Routes
 
@@ -170,67 +126,10 @@ If the named route defines parameters, you may pass the parameters as the second
 
     $url = route('profile', ['id' => 1]);
 
-#### Inspecting The Current Route
-
-If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
-
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next)
-    {
-        if ($request->route()->named('profile')) {
-            //
-        }
-
-        return $next($request);
-    }
-
 <a name="route-groups"></a>
 ## Route Groups
 
 Route groups allow you to share route attributes, such as middleware or namespaces, across a large number of routes without needing to define those attributes on each individual route. Shared attributes are specified in an array format as the first parameter to the `Route::group` method.
-
-<a name="route-group-middleware"></a>
-### Middleware
-
-To assign middleware to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
-
-    Route::middleware(['first', 'second'])->group(function () {
-        Route::get('/', function () {
-            // Uses first & second Middleware
-        });
-
-        Route::get('user/profile', function () {
-            // Uses first & second Middleware
-        });
-    });
-
-<a name="route-group-namespaces"></a>
-### Namespaces
-
-Another common use-case for route groups is assigning the same PHP namespace to a group of controllers using the `namespace` method:
-
-    Route::namespace('Admin')->group(function () {
-        // Controllers Within The "App\Http\Controllers\Admin" Namespace
-    });
-
-Remember, by default, the `RouteServiceProvider` includes your route files within a namespace group, allowing you to register controller routes without specifying the full `App\Http\Controllers` namespace prefix. So, you only need to specify the portion of the namespace that comes after the base `App\Http\Controllers` namespace.
-
-<a name="route-group-sub-domain-routing"></a>
-### Sub-Domain Routing
-
-Route groups may also be used to handle sub-domain routing. Sub-domains may be assigned route parameters just like route URIs, allowing you to capture a portion of the sub-domain for usage in your route or controller. The sub-domain may be specified by calling the the `domain` method before defining the group:
-
-    Route::domain('{account}.myapp.com')->group(function () {
-        Route::get('user/{id}', function ($account, $id) {
-            //
-        });
-    });
 
 <a name="route-group-prefixes"></a>
 ### Route Prefixes
@@ -258,56 +157,7 @@ Laravel automatically resolves Eloquent models defined in routes or controller a
     });
 
 Since the `$user` variable is type-hinted as the `App\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
-
-#### Customizing The Key Name
-
-If you would like model binding to use a database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-<a name="explicit-binding"></a>
-### Explicit Binding
-
-To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings in the `boot` method of the `RouteServiceProvider` class:
-
-    public function boot()
-    {
-        parent::boot();
-
-        Route::model('user', App\User::class);
-    }
-
-Next, define a route that contains a `{user}` parameter:
-
-    Route::get('profile/{user}', function (App\User $user) {
-        //
-    });
-
-Since we have bound all `{user}` parameters to the `App\User` model, a `User` instance will be injected into the route. So, for example, a request to `profile/1` will inject the `User` instance from the database which has an ID of `1`.
-
-If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
-
-#### Customizing The Resolution Logic
-
-If you wish to use your own resolution logic, you may use the `Route::bind` method. The `Closure` you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
-
-    public function boot()
-    {
-        parent::boot();
-
-        Route::bind('user', function ($value) {
-            return App\User::where('name', $value)->first();
-        });
-    }
-
+ 
 <a name="form-method-spoofing"></a>
 ## Form Method Spoofing
 
@@ -332,5 +182,3 @@ You may use the `current`, `currentRouteName`, and `currentRouteAction` methods 
     $name = Route::currentRouteName();
 
     $action = Route::currentRouteAction();
-
-Refer to the API documentation for both the [underlying class of the Route facade](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) and [Route instance](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) to review all accessible methods.

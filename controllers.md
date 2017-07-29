@@ -5,15 +5,12 @@
     - [Defining Controllers](#defining-controllers)
     - [Controllers & Namespaces](#controllers-and-namespaces)
     - [Single Action Controllers](#single-action-controllers)
-- [Controller Middleware](#controller-middleware)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
     - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
-    - [Localizing Resource URIs](#restful-localizing-resource-uris)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
-- [Route Caching](#route-caching)
 
 <a name="introduction"></a>
 ## Introduction
@@ -96,42 +93,6 @@ When registering routes for single action controllers, you do not need to specif
 
     Route::get('user/{id}', 'ShowProfile');
 
-<a name="controller-middleware"></a>
-## Controller Middleware
-
-[Middleware](/docs/{{version}}/middleware) may be assigned to the controller's routes in your route files:
-
-    Route::get('profile', 'UserController@show')->middleware('auth');
-
-However, it is more convenient to specify middleware within your controller's constructor. Using the `middleware` method from your controller's constructor, you may easily assign middleware to the controller's action. You may even restrict the middleware to only certain methods on the controller class:
-
-    class UserController extends Controller
-    {
-        /**
-         * Instantiate a new controller instance.
-         *
-         * @return void
-         */
-        public function __construct()
-        {
-            $this->middleware('auth');
-
-            $this->middleware('log')->only('index');
-
-            $this->middleware('subscribed')->except('store');
-        }
-    }
-
-Controllers also allow you to register middleware using a Closure. This provides a convenient way to define a middleware for a single controller without defining an entire middleware class:
-
-    $this->middleware(function ($request, $next) {
-        // ...
-
-        return $next($request);
-    });
-
-> {tip} You may assign middleware to a subset of controller actions; however, it may indicate your controller is growing too large. Instead, consider breaking your controller into multiple, smaller controllers.
-
 <a name="resource-controllers"></a>
 ## Resource Controllers
 
@@ -206,31 +167,6 @@ By default, `Route::resource` will create the route parameters for your resource
 
     /user/{admin_user}
 
-<a name="restful-localizing-resource-uris"></a>
-### Localizing Resource URIs
-
-By default, `Route::resource` will create resource URIs using English verbs. If you need to localize the `create` and `edit` action verbs, you may use the `Route::resourceVerbs` method. This may be done in the `boot` method of your `AppServiceProvider`:
-
-    use Illuminate\Support\Facades\Route;
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Route::resourceVerbs([
-            'create' => 'crear',
-            'edit' => 'editar',
-        ]);
-    }
-
-Once the verbs have been customized, a resource route registration such as `Route::resource('fotos', 'PhotoController')` will produce the following URIs:
-
-    /fotos/crear
-
-    /fotos/{foto}/editar
 
 <a name="restful-supplementing-resource-controllers"></a>
 ### Supplementing Resource Controllers
@@ -329,18 +265,3 @@ You may still type-hint the `Illuminate\Http\Request` and access your `id` param
             //
         }
     }
-
-<a name="route-caching"></a>
-## Route Caching
-
-> {note} Closure based routes cannot be cached. To use route caching, you must convert any Closure routes to controller classes.
-
-If your application is exclusively using controller based routes, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. In some cases, your route registration may even be up to 100x faster. To generate a route cache, just execute the `route:cache` Artisan command:
-
-    php artisan route:cache
-
-After running this command, your cached routes file will be loaded on every request. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
-
-You may use the `route:clear` command to clear the route cache:
-
-    php artisan route:clear
