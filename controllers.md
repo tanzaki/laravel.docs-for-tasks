@@ -5,9 +5,7 @@
     - [Defining Controllers](#defining-controllers)
     - [Controllers & Namespaces](#controllers-and-namespaces)
 - [Resource Controllers](#resource-controllers)
-    - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
-    - [Naming Resource Route Parameters](#restful-naming-resource-route-parameters)
     - [Supplementing Resource Controllers](#restful-supplementing-resource-controllers)
 - [Dependency Injection & Controllers](#dependency-injection-and-controllers)
 
@@ -99,18 +97,6 @@ Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need 
 
     {{ method_field('PUT') }}
 
-<a name="restful-partial-resource-routes"></a>
-### Partial Resource Routes
-
-When declaring a resource route, you may specify a subset of actions the controller should handle instead of the full set of default actions:
-
-    Route::resource('photo', 'PhotoController', ['only' => [
-        'index', 'show'
-    ]]);
-
-    Route::resource('photo', 'PhotoController', ['except' => [
-        'create', 'store', 'update', 'destroy'
-    ]]);
 
 <a name="restful-naming-resource-routes"></a>
 ### Naming Resource Routes
@@ -120,20 +106,6 @@ By default, all resource controller actions have a route name; however, you can 
     Route::resource('photo', 'PhotoController', ['names' => [
         'create' => 'photo.build'
     ]]);
-
-<a name="restful-naming-resource-route-parameters"></a>
-### Naming Resource Route Parameters
-
-By default, `Route::resource` will create the route parameters for your resource routes based on the "singularized" version of the resource name. You can easily override this on a per resource basis by passing `parameters` in the options array. The `parameters` array should be an associative array of resource names and parameter names:
-
-    Route::resource('user', 'AdminUserController', ['parameters' => [
-        'user' => 'admin_user'
-    ]]);
-
- The example above generates the following URIs for the resource's `show` route:
-
-    /user/{admin_user}
-
 
 <a name="restful-supplementing-resource-controllers"></a>
 ### Supplementing Resource Controllers
