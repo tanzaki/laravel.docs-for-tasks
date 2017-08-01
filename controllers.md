@@ -4,7 +4,6 @@
 - [Basic Controllers](#basic-controllers)
     - [Defining Controllers](#defining-controllers)
     - [Controllers & Namespaces](#controllers-and-namespaces)
-    - [Single Action Controllers](#single-action-controllers)
 - [Resource Controllers](#resource-controllers)
     - [Partial Resource Routes](#restful-partial-resource-routes)
     - [Naming Resource Routes](#restful-naming-resource-routes)
@@ -42,7 +41,9 @@ Below is an example of a basic controller class. Note that the controller extend
          */
         public function show($id)
         {
-            return view('user.profile', ['user' => User::findOrFail($id)]);
+            return view('user.profile', [
+                'user' => User::findOrFail($id)
+            ]);
         }
     }
 
@@ -58,40 +59,6 @@ Now, when a request matches the specified route URI, the `show` method on the `U
 ### Controllers & Namespaces
 
 It is very important to note that we did not need to specify the full controller namespace when defining the controller route. Since the `RouteServiceProvider` loads your route files within a route group that contains the namespace, we only specified the portion of the class name that comes after the `App\Http\Controllers` portion of the namespace.
-
-If you choose to nest your controllers deeper into the `App\Http\Controllers` directory, simply use the specific class name relative to the `App\Http\Controllers` root namespace. So, if your full controller class is `App\Http\Controllers\Photos\AdminController`, you should register routes to the controller like so:
-
-    Route::get('foo', 'Photos\AdminController@method');
-
-<a name="single-action-controllers"></a>
-### Single Action Controllers
-
-If you would like to define a controller that only handles a single action, you may place a single `__invoke` method on the controller:
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use App\User;
-    use App\Http\Controllers\Controller;
-
-    class ShowProfile extends Controller
-    {
-        /**
-         * Show the profile for the given user.
-         *
-         * @param  int  $id
-         * @return Response
-         */
-        public function __invoke($id)
-        {
-            return view('user.profile', ['user' => User::findOrFail($id)]);
-        }
-    }
-
-When registering routes for single action controllers, you do not need to specify a method:
-
-    Route::get('user/{id}', 'ShowProfile');
 
 <a name="resource-controllers"></a>
 ## Resource Controllers
