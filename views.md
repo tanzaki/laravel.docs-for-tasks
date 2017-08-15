@@ -3,12 +3,11 @@
 - [Creating Views](#creating-views)
 - [Passing Data To Views](#passing-data-to-views)
     - [Sharing Data With All Views](#sharing-data-with-all-views)
-- [View Composers](#view-composers)
 
 <a name="creating-views"></a>
 ## Creating Views
 
-> {tip} Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
+> Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/{{version}}/blade) to get started.
 
 Views contain the HTML served by your application and separate your controller / application logic from your presentation logic. Views are stored in the `resources/views` directory. A simple view might look something like this:
 
@@ -31,16 +30,6 @@ As you can see, the first argument passed to the `view` helper corresponds to th
 Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may reference it like so:
 
     return view('admin.profile', $data);
-
-#### Determining If A View Exists
-
-If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
-
-    use Illuminate\Support\Facades\View;
-
-    if (View::exists('emails.customer')) {
-        //
-    }
 
 <a name="passing-data-to-views"></a>
 ## Passing Data To Views
@@ -87,116 +76,3 @@ Occasionally, you may need to share a piece of data with all views that are rend
         }
     }
 
-<a name="view-composers"></a>
-## View Composers
-
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location.
-
-For this example, let's register the view composers within a [service provider](/docs/{{version}}/providers). We'll use the `View` facade to access the underlying `Illuminate\Contracts\View\Factory` contract implementation. Remember, Laravel does not include a default directory for view composers. You are free to organize them however you wish. For example, you could create an `app/Http/ViewComposers` directory:
-
-    <?php
-
-    namespace App\Providers;
-
-    use Illuminate\Support\Facades\View;
-    use Illuminate\Support\ServiceProvider;
-
-    class ComposerServiceProvider extends ServiceProvider
-    {
-        /**
-         * Register bindings in the container.
-         *
-         * @return void
-         */
-        public function boot()
-        {
-            // Using class based composers...
-            View::composer(
-                'profile', 'App\Http\ViewComposers\ProfileComposer'
-            );
-
-            // Using Closure based composers...
-            View::composer('dashboard', function ($view) {
-                //
-            });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
-        }
-    }
-
-> {note} Remember, if you create a new service provider to contain your view composer registrations, you will need to add the service provider to the `providers` array in the `config/app.php` configuration file.
-
-Now that we have registered the composer, the `ProfileComposer@compose` method will be executed each time the `profile` view is being rendered. So, let's define the composer class:
-
-    <?php
-
-    namespace App\Http\ViewComposers;
-
-    use Illuminate\View\View;
-    use App\Repositories\UserRepository;
-
-    class ProfileComposer
-    {
-        /**
-         * The user repository implementation.
-         *
-         * @var UserRepository
-         */
-        protected $users;
-
-        /**
-         * Create a new profile composer.
-         *
-         * @param  UserRepository  $users
-         * @return void
-         */
-        public function __construct(UserRepository $users)
-        {
-            // Dependencies automatically resolved by service container...
-            $this->users = $users;
-        }
-
-        /**
-         * Bind data to the view.
-         *
-         * @param  View  $view
-         * @return void
-         */
-        public function compose(View $view)
-        {
-            $view->with('count', $this->users->count());
-        }
-    }
-
-Just before the view is rendered, the composer's `compose` method is called with the `Illuminate\View\View` instance. You may use the `with` method to bind data to the view.
-
-> {tip} All view composers are resolved via the [service container](/docs/{{version}}/container), so you may type-hint any dependencies you need within a composer's constructor.
-
-#### Attaching A Composer To Multiple Views
-
-You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
-
-    View::composer(
-        ['profile', 'dashboard'],
-        'App\Http\ViewComposers\MyViewComposer'
-    );
-
-The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
-
-    View::composer('*', function ($view) {
-        //
-    });
-
-#### View Creators
-
-View **creators** are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
-
-    View::creator('profile', 'App\Http\ViewCreators\ProfileCreator');
