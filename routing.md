@@ -4,8 +4,6 @@
 - [Route Parameters](#route-parameters)
     - [Required Parameters](#required-parameters)
 - [Named Routes](#named-routes)
-- [Route Model Binding](#route-model-binding)
-    - [Implicit Binding](#implicit-binding)
 
 <a name="basic-routing"></a>
 ## Basic Routing
@@ -96,20 +94,3 @@ If the named route defines parameters, you may pass the parameters as the second
     })->name('profile');
 
     $url = route('profile', ['id' => 1]);
-
-
-<a name="route-model-binding"></a>
-## Route Model Binding
-
-When injecting a model ID to a route or controller action, you will often query to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
-
-<a name="implicit-binding"></a>
-### Implicit Binding
-
-Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
-
-    Route::get('api/users/{user}', function (App\User $user) {
-        return $user->email;
-    });
-
-Since the `$user` variable is type-hinted as the `App\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
