@@ -26,7 +26,7 @@ As you can see, the first argument passed to the `view` helper corresponds to th
 
 Of course, views may also be nested within sub-directories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may reference it like so:
 
-    return view('admin.profile', $data);
+    return view('admin.profile');
 
 <a name="passing-data-to-views"></a>
 ## Passing Data To Views
@@ -35,4 +35,4 @@ As you saw in the previous examples, you may pass an array of data to views:
 
     return view('greetings', ['name' => 'Victoria']);
 
-When passing information in this manner, the data should be an array with key / value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`.
+When passing information in this view, the data should be an array with key / value pairs. Inside your view, you can then access each value using its corresponding key, such as `<?php echo $key; ?>`.
