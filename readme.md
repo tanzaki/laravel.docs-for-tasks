@@ -5,7 +5,6 @@
 
 ## The Basics
 - [Routing](routing.md)
-- Controllers
 - [Views](views.md)
 
 
