@@ -8,32 +8,24 @@
 <a name="introduction"></a>
 ## Introduction
 
-The `Illuminate\Support\Collection` class provides a fluent, convenient wrapper for working with arrays of data. For example, check out the following code. We'll use the `collect` helper to create a new collection instance from the array, run the `strtoupper` function on each element, and then remove all empty elements:
+`collect` cung cấp sự đơn giản, thuận tiện cho làm việc với arrays của dữ liệu. Ví dụ, xem những dòng code sau. Chúng ta sẽ sử dụng `collect` helper tạo ra một bộ sưu tập từ array, khởi động `strtoupper` function trên mỗi phần tử: 
 
-    $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
+    $collection = collect(['taylor', 'abigail'])->map(function ($name) {
         return strtoupper($name);
     })
-    ->reject(function ($name) {
-        return empty($name);
-    });
-
-
-As you can see, the `Collection` class allows you to chain its methods to perform fluent mapping and reducing of the underlying array. In general, collections are immutable, meaning every `Collection` method returns an entirely new `Collection` instance.
-
+    
 <a name="creating-collections"></a>
 ### Creating Collections
 
-As mentioned above, the `collect` helper returns a new `Illuminate\Support\Collection` instance for the given array. So, creating a collection is as simple as:
+Như được đề cập ở trên, `collect` helper trả về một mảng mới. Tạo một collection dẽ dàng như:
 
     $collection = collect([1, 2, 3]);
 
-> {tip} The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
 <a name="available-methods"></a>
 ## Available Methods
 
-For the remainder of this documentation, we'll discuss each method available on the `Collection` class. Remember, all of these methods may be chained to fluently manipulating the underlying array. Furthermore, almost every method returns a new `Collection` instance, allowing you to preserve the original copy of the collection when necessary:
-
+Đối với phần còn lại của tài liệu này, chúng ta sẽ mô tả mỗi phương pháp xuất hiện trong collection. Nhớ rằng, tất cả phương pháp này chó thể kết nối để sử dụng thành thạo các mảng bên dưới. Hơn nữa, hầu hết mọi phương pháp đều trả về collection mới  
 <style>
     #collection-method-list > p {
         column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
