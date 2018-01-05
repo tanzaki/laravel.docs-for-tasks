@@ -159,7 +159,7 @@ Hàm `contains` kiểm tra xem biến có trong mảng không:
 
 #### `count()` {#collection-method}
 
-The `count` method returns the total number of items in the collection:
+Hàm `count` đếm xem trong mảng có bao nhiêu phần tử:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -167,64 +167,7 @@ The `count` method returns the total number of items in the collection:
 
     // 4
 
-<a name="method-diff"></a>
-#### `diff()` {#collection-method}
 
-The `diff` method compares the collection against another collection or a plain PHP `array` based on its values. This method will return the values in the original collection that are not present in the given collection:
-
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $diff = $collection->diff([2, 4, 6, 8]);
-
-    $diff->all();
-
-    // [1, 3, 5]
-
-<a name="method-diffassoc"></a>
-#### `diffAssoc()` {#collection-method}
-
-The `diffAssoc` method compares the collection against another collection or a plain PHP `array` based on its keys and values. This method will return the key / value pairs in the original collection that are not present in the given collection:
-
-    $collection = collect([
-        'color' => 'orange',
-        'type' => 'fruit',
-        'remain' => 6
-    ]);
-    
-    $diff = $collection->diffAssoc([
-        'color' => 'yellow',
-        'type' => 'fruit',
-        'remain' => 3,
-        'used' => 6
-    ]);
-    
-    $diff->all();
-    
-    // ['color' => 'orange', 'remain' => 6]
-
-<a name="method-diffkeys"></a>
-#### `diffKeys()` {#collection-method}
-
-The `diffKeys` method compares the collection against another collection or a plain PHP `array` based on its keys. This method will return the key / value pairs in the original collection that are not present in the given collection:
-
-    $collection = collect([
-        'one' => 10,
-        'two' => 20,
-        'three' => 30,
-        'four' => 40,
-        'five' => 50,
-    ]);
-
-    $diff = $collection->diffKeys([
-        'two' => 2,
-        'four' => 4,
-        'six' => 6,
-        'eight' => 8,
-    ]);
-
-    $diff->all();
-
-    // ['one' => 10, 'three' => 30, 'five' => 50]
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}
