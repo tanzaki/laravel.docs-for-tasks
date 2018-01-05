@@ -138,38 +138,6 @@ Như được đề cập ở trên, `collect` helper trả về một mảng m�
 </style>
 
 
-
-<a name="method-average"></a>
-#### `average()` {#collection-method}
-
-Có tên gọi khác là [`avg`](#method-avg).
-
-<a name="method-avg"></a>
-#### `avg()` {#collection-method}
-
-Hàm`avg` trả về  [giá trị trung bình](https://en.wikipedia.org/wiki/Average) of a given key:
-
-    $average = collect([['foo' => 10], ['foo' => 10], ['foo' => 20], ['foo' => 40]])->avg('foo');
-
-    // 20
-
-    $average = collect([1, 1, 2, 4])->avg();
-
-    // 2
-
-<a name="method-chunk"></a>
-#### `chunk()` {#collection-method}
-
-The `chunk` method breaks the collection into multiple, smaller collections of a given size:
-
-    $collection = collect([1, 2, 3, 4, 5, 6, 7]);
-
-    $chunks = $collection->chunk(4);
-
-    $chunks->toArray();
-
-    // [[1, 2, 3, 4], [5, 6, 7]]
-
 This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/css/#grid). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
 
     @foreach ($products->chunk(3) as $chunk)
