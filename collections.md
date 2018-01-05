@@ -172,13 +172,13 @@ Hàm `count` đếm xem trong mảng có bao nhiêu phần tử:
 <a name="method-each"></a>
 #### `each()` {#collection-method}
 
-The `each` method iterates over the items in the collection and passes each item to a callback:
-
-    $collection = $collection->each(function ($item, $key) {
+Hàm `each` thực hiện hành động với từng items của mảng :
+    
+    $collection->each(function ($item, $key) {
         //
     });
 
-If you would like to stop iterating through the items, you may return `false` from your callback:
+Nếu bạn muốn dừng lặp lại items, bạn nên sử dụng `false` trong hành động:
 
     $collection = $collection->each(function ($item, $key) {
         if (/* some condition */) {
