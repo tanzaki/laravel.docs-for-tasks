@@ -145,9 +145,9 @@ Như được đề cập ở trên, `collect` helper trả về một mảng m�
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
 
-The `contains` method determines whether the collection contains a given item:
+Hàm `contains` kiểm tra xem biến có trong mảng không:
 
-    $collection = collect(['name' => 'Desk', 'price' => 100]);
+    $collection = collect(['Desk', 100]);
 
     $collection->contains('Desk');
 
@@ -157,35 +157,6 @@ The `contains` method determines whether the collection contains a given item:
 
     // false
 
-You may also pass a key / value pair to the `contains` method, which will determine if the given pair exists in the collection:
-
-    $collection = collect([
-        ['product' => 'Desk', 'price' => 200],
-        ['product' => 'Chair', 'price' => 100],
-    ]);
-
-    $collection->contains('product', 'Bookcase');
-
-    // false
-
-Finally, you may also pass a callback to the `contains` method to perform your own truth test:
-
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    $collection->contains(function ($value, $key) {
-        return $value > 5;
-    });
-
-    // false
-
-The `contains` method uses "loose" comparisons when checking item values, meaning a string with an integer value will be considered equal to an integer of the same value. Use the [`containsStrict`](#method-containsstrict) method to filter using "strict" comparisons.
-
-<a name="method-containsstrict"></a>
-#### `containsStrict()` {#collection-method}
-
-This method has the same signature as the [`contains`](#method-contains) method; however, all values are compared using "strict" comparisons.
-
-<a name="method-count"></a>
 #### `count()` {#collection-method}
 
 The `count` method returns the total number of items in the collection:
