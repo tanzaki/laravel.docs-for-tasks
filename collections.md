@@ -138,41 +138,9 @@ Như được đề cập ở trên, `collect` helper trả về một mảng m�
 </style>
 
 
-This method is especially useful in [views](/docs/{{version}}/views) when working with a grid system such as [Bootstrap](https://getbootstrap.com/css/#grid). Imagine you have a collection of [Eloquent](/docs/{{version}}/eloquent) models you want to display in a grid:
 
-    @foreach ($products->chunk(3) as $chunk)
-        <div class="row">
-            @foreach ($chunk as $product)
-                <div class="col-xs-4">{{ $product->name }}</div>
-            @endforeach
-        </div>
-    @endforeach
 
-<a name="method-collapse"></a>
-#### `collapse()` {#collection-method}
 
-The `collapse` method collapses a collection of arrays into a single, flat collection:
-
-    $collection = collect([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
-
-    $collapsed = $collection->collapse();
-
-    $collapsed->all();
-
-    // [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-<a name="method-combine"></a>
-#### `combine()` {#collection-method}
-
-The `combine` method combines the keys of the collection with the values of another array or collection:
-
-    $collection = collect(['name', 'age']);
-
-    $combined = $collection->combine(['George', 29]);
-
-    $combined->all();
-
-    // ['name' => 'George', 'age' => 29]
 
 <a name="method-contains"></a>
 #### `contains()` {#collection-method}
