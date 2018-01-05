@@ -142,12 +142,12 @@ Như được đề cập ở trên, `collect` helper trả về một mảng m�
 <a name="method-average"></a>
 #### `average()` {#collection-method}
 
-Alias for the [`avg`](#method-avg) method.
+Có tên gọi khác là [`avg`](#method-avg).
 
 <a name="method-avg"></a>
 #### `avg()` {#collection-method}
 
-The `avg` method returns the [average value](https://en.wikipedia.org/wiki/Average) of a given key:
+Hàm`avg` trả về  [giá trị trung bình](https://en.wikipedia.org/wiki/Average) of a given key:
 
     $average = collect([['foo' => 10], ['foo' => 10], ['foo' => 20], ['foo' => 40]])->avg('foo');
 
