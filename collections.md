@@ -186,36 +186,11 @@ Nếu bạn muốn dừng lặp lại items, bạn nên sử dụng `false` tron
         }
     });
 
-<a name="method-every"></a>
-#### `every()` {#collection-method}
-
-The `every` method may be used to verify that all elements of a collection pass a given truth test:
-
-    collect([1, 2, 3, 4])->every(function ($value, $key) {
-        return $value > 2;
-    });
-
-    // false
-
-<a name="method-except"></a>
-#### `except()` {#collection-method}
-
-The `except` method returns all items in the collection except for those with the specified keys:
-
-    $collection = collect(['product_id' => 1, 'price' => 100, 'discount' => false]);
-
-    $filtered = $collection->except(['price', 'discount']);
-
-    $filtered->all();
-
-    // ['product_id' => 1]
-
-For the inverse of `except`, see the [only](#method-only) method.
 
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
-The `filter` method filters the collection using the given callback, keeping only those items that pass a given truth test:
+Hàm`filter` filters the collection using the given callback, keeping only those items that pass a given truth test:
 
     $collection = collect([1, 2, 3, 4]);
 
